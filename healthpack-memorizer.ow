@@ -1,109 +1,91 @@
-variables
-{
+variables {
 	global:
-		0: hp_locations
-		1: STATE
+		0: STATE
+		1: HP_LOCATIONS
 
 	player:
-		0: hp_location_idx
+		0: HP_LOCATION_IDX
 }
 
-rule("SET HUD")
-{
-	event
-	{
+rule("SET HUD") {
+	event {
 		Ongoing - Each Player;
 		All;
 		All;
 	}
 
-	actions
-	{ 
+	actions { 
 		Create HUD Text(Event Player, Position Of(Event Player), Null, Null, Left, 0, White, White, White, Visible To and String,
 			Default Visibility);
-		Create HUD Text(All Players(All Teams), Subtract(Position Of(Event Player), Value In Array(Global Variable(hp_locations),
-			Player Variable(Event Player, hp_location_idx))), Null, Null, Left, 0, White, White, White, Visible To and String,
+		Create HUD Text(All Players(All Teams), Subtract(Position Of(Event Player), Value In Array(Global Variable(HP_LOCATIONS),
+			Player Variable(Event Player, HP_LOCATION_IDX))), Null, Null, Left, 0, White, White, White, Visible To and String,
 			Default Visibility);
-		Create HUD Text(All Players(All Teams), Player Variable(Event Player, hp_location_idx), Null, Null, Left, 0, White, White, White,
+		Create HUD Text(All Players(All Teams), Player Variable(Event Player, HP_LOCATION_IDX), Null, Null, Left, 0, White, White, White,
 			Visible To and String, Default Visibility);
 	}
 }
 
-rule("SET HP LOCATIONS")
-{
-	event
-	{
+rule("SET HP LOCATIONS") {
+	event {
 		Ongoing - Each Player;
 		All;
 		All;
 	}
 
-	actions
-	{
-		Set Global Variable(hp_locations, Empty Array);
-		Set Global Variable(hp_locations, Append To Array(Global Variable(hp_locations), Vector(12.910, -1.230, -48.880)));
-		Set Global Variable(hp_locations, Append To Array(Global Variable(hp_locations), Vector(14.790, -5.000, -96.070)));
-		Set Global Variable(hp_locations, Append To Array(Global Variable(hp_locations), Vector(29.880, 3, -89.790)));
-		Set Global Variable(hp_locations, Append To Array(Global Variable(hp_locations), Vector(-13.060, 1, -61.360)));
-		Set Global Variable(hp_locations, Append To Array(Global Variable(hp_locations), Vector(7.430, 4, 16.710)));
-		Set Global Variable(hp_locations, Append To Array(Global Variable(hp_locations), Vector(7.850, -1.160, 35.790)));
-		Set Global Variable(hp_locations, Append To Array(Global Variable(hp_locations), Vector(35.610, 0.350, 17.110)));
-		Set Global Variable(hp_locations, Append To Array(Global Variable(hp_locations), Vector(45.060, 1, -0.650)));
+	actions {
+		Set Global Variable(HP_LOCATIONS, Empty Array);
+		Set Global Variable(HP_LOCATIONS, Append To Array(Global Variable(HP_LOCATIONS), Vector(12.910, -1.230, -48.880)));
+		Set Global Variable(HP_LOCATIONS, Append To Array(Global Variable(HP_LOCATIONS), Vector(14.790, -5.000, -96.070)));
+		Set Global Variable(HP_LOCATIONS, Append To Array(Global Variable(HP_LOCATIONS), Vector(29.880, 3, -89.790)));
+		Set Global Variable(HP_LOCATIONS, Append To Array(Global Variable(HP_LOCATIONS), Vector(-13.060, 1, -61.360)));
+		Set Global Variable(HP_LOCATIONS, Append To Array(Global Variable(HP_LOCATIONS), Vector(7.430, 4, 16.710)));
+		Set Global Variable(HP_LOCATIONS, Append To Array(Global Variable(HP_LOCATIONS), Vector(7.850, -1.160, 35.790)));
+		Set Global Variable(HP_LOCATIONS, Append To Array(Global Variable(HP_LOCATIONS), Vector(35.610, 0.350, 17.110)));
+		Set Global Variable(HP_LOCATIONS, Append To Array(Global Variable(HP_LOCATIONS), Vector(45.060, 1, -0.650)));
 	}
 }
 
-rule("CREATE BEAM")
-{
-	event
-	{
+rule("CREATE BEAM") {
+	event {
 		Ongoing - Each Player;
 		All;
 		All;
 	}
 
-	conditions
-	{
+	conditions {
 		Has Spawned(Event Player) == True;
 	}
 
-	actions
-	{
-		Create Beam Effect(All Players(All Teams), Good Beam, Event Player, Value In Array(Global Variable(hp_locations), Player Variable(
-			Event Player, hp_location_idx)), Aqua, Visible To Position and Radius);
+	actions {
+		Create Beam Effect(All Players(All Teams), Good Beam, Event Player, Value In Array(Global Variable(HP_LOCATIONS), Player Variable(
+			Event Player, HP_LOCATION_IDX)), Aqua, Visible To Position and Radius);
 	}
 }
 
-rule("UPDATE BEAM")
-{
-	event
-	{
+rule("UPDATE BEAM") {
+	event {
 		Ongoing - Each Player;
 		All;
 		All;
 	}
 
-	conditions
-	{
-		Distance Between(Position Of(Event Player), Value In Array(Global Variable(hp_locations), Player Variable(Event Player,
-			hp_location_idx))) < 3;
+	conditions {
+		Distance Between(Position Of(Event Player), Value In Array(Global Variable(HP_LOCATIONS), Player Variable(Event Player,
+			HP_LOCATION_IDX))) < 3;
 	}
 
-	actions
-	{
-		Set Player Variable(Event Player, hp_location_idx, Add(Player Variable(Event Player, hp_location_idx), 1));
+	actions {
+		Set Player Variable(Event Player, HP_LOCATION_IDX, Add(Player Variable(Event Player, HP_LOCATION_IDX), 1));
 		Play Effect(All Players(All Teams), Good Explosion, Aqua, Event Player, 1);
 	}
 }
 
-rule("")
-{
-	event
-	{
+rule("") {
+	event {
 		Ongoing - Global;
 	}
 
-	actions
-	{
+	actions {
 		Set Global Variable(STATE, Value In Array(Global Variable(STATE), 0));
 	}
 }
