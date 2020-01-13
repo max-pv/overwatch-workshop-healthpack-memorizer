@@ -1,7 +1,7 @@
 variables {
   global:
     // Locations
-    0: HP_LOCATIONS
+    0: HP_LOCATIONS // HP_LOCATIONS[MAP_NAME][HP_TYPE]
     1: HP_LOCATIONS_LARGE
     2: HP_LOCATIONS_SMALL
 
@@ -14,6 +14,11 @@ variables {
     6: LARGE_HP_TOGGLE_LOCATION
     7: TOGGLE_LOCATION_DISTANCE
     8: LEGEND_LOCATION
+
+    // Map names
+    9: CURRENT_MAP
+    10: MAP_HANAMURA
+    11: MAP_DORADO
 
   player:
     0: CURRENT_HP_TYPE
@@ -48,13 +53,39 @@ rule("INIT VARIABLES") {
         Vector(0, 3, 0)
       )
     );
+
+    Set Global Variable(MAP_HANAMURA, 0);
+    Set Global Variable(MAP_DORADO, 1);
   }
 }
 
 // Healthpack locations database
-rule("SET HP_LOCATIONS") {
+rule("INITIALIZE HP_LOCATIONS") {
   event {
     Ongoing - Global;
+  }
+
+  actions {
+    // Large healthpacks
+    Set Global Variable(HP_LOCATIONS_LARGE, Null);
+    // Small healthpacks
+    Set Global Variable(HP_LOCATIONS_SMALL, Null);
+
+    // Assing to container
+    Set Global Variable(HP_LOCATIONS, Empty Array);
+    Set Global Variable At Index(HP_LOCATIONS, Global Variable(KEY_HEALTHPACK_TYPE_LARGE), Global Variable(HP_LOCATIONS_LARGE));
+    Set Global Variable At Index(HP_LOCATIONS, Global Variable(KEY_HEALTHPACK_TYPE_SMALL), Global Variable(HP_LOCATIONS_SMALL));
+  }
+}
+
+rule("INIT MAP_HANAMURA") {
+  event {
+    Ongoing - Global;
+  }
+
+  conditions {
+    Current Map == Map(Hanamura);
+    Current Map == Map(Hanamura Winter);
   }
 
   actions {
@@ -80,6 +111,31 @@ rule("SET HP_LOCATIONS") {
     Set Global Variable(HP_LOCATIONS_SMALL, Append To Array(Global Variable(HP_LOCATIONS_SMALL), Vector(25.53, 0.02, -23.56)));
     Set Global Variable(HP_LOCATIONS_SMALL, Append To Array(Global Variable(HP_LOCATIONS_SMALL), Vector(52.03, 2.00, -28.10)));
     Set Global Variable(HP_LOCATIONS_SMALL, Append To Array(Global Variable(HP_LOCATIONS_SMALL), Vector(40.96, 0.30, 34.56)));
+
+    // Assing to container
+    Set Global Variable(HP_LOCATIONS, Empty Array);
+    Set Global Variable At Index(HP_LOCATIONS, Global Variable(KEY_HEALTHPACK_TYPE_LARGE), Global Variable(HP_LOCATIONS_LARGE));
+    Set Global Variable At Index(HP_LOCATIONS, Global Variable(KEY_HEALTHPACK_TYPE_SMALL), Global Variable(HP_LOCATIONS_SMALL));
+  }
+}
+
+rule("INIT MAP_DORADO") {
+  event {
+    Ongoing - Global;
+  }
+
+  conditions {
+    Current Map == Map(Dorado);
+  }
+
+  actions {
+    // Large healthpacks
+    Set Global Variable(HP_LOCATIONS_LARGE, Empty Array);
+    Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(14.790, -5.000, -96.070)));
+
+    // Small healthpacks
+    Set Global Variable(HP_LOCATIONS_SMALL, Empty Array);
+    Set Global Variable(HP_LOCATIONS_SMALL, Append To Array(Global Variable(HP_LOCATIONS_SMALL), Vector(-0.97, -1.00, -97.57)));
 
     // Assing to container
     Set Global Variable(HP_LOCATIONS, Empty Array);
