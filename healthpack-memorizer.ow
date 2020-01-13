@@ -1,31 +1,95 @@
 variables {
 	global:
-		0: STATE
-		1: HP_LOCATIONS
+		// Locations
+		0: HP_LOCATIONS
+		1: HP_LOCATIONS_LARGE
+		2: HP_LOCATIONS_SMALL
+
+		// Array keys
+		3: KEY_HEALTHPACK_TYPE_LARGE
+		4: KEY_HEALTHPACK_TYPE_SMALL
+
+    // Controls positions
+    5: SMALL_HP_TOGGLE_LOCATION
+    6: LARGE_HP_TOGGLE_LOCATION
+    7: TOGGLE_LOCATION_DISTANCE
+    8: LEGEND_LOCATION
 
 	player:
-		0: HP_LOCATION_IDX
+		0: CURRENT_HP_TYPE
+		1: CURRENT_HP_IDX
 }
 
-rule("SET HUD") {
+// Initialize variables
+rule("INIT VARIABLES") {
 	event {
-		Ongoing - Each Player;
-		All;
-		All;
+		Ongoing - Global;
 	}
 
-	actions { 
-		Create HUD Text(Event Player, Position Of(Event Player), Null, Null, Left, 0, White, White, White, Visible To and String,
-			Default Visibility);
-		Create HUD Text(All Players(All Teams), Subtract(Position Of(Event Player), Value In Array(Global Variable(HP_LOCATIONS),
-			Player Variable(Event Player, HP_LOCATION_IDX))), Null, Null, Left, 0, White, White, White, Visible To and String,
-			Default Visibility);
-		Create HUD Text(All Players(All Teams), Player Variable(Event Player, HP_LOCATION_IDX), Null, Null, Left, 0, White, White, White,
-			Visible To and String, Default Visibility);
+	actions {
+		Set Global Variable(KEY_HEALTHPACK_TYPE_LARGE, 0);
+		Set Global Variable(KEY_HEALTHPACK_TYPE_SMALL, 1);
+
+    // Controls location
+		Set Global Variable(SMALL_HP_TOGGLE_LOCATION, Vector(-41.69, 1, -106.96));
+		Set Global Variable(LARGE_HP_TOGGLE_LOCATION, Vector(-38.69, 1, -109.96));
+		Set Global Variable(TOGGLE_LOCATION_DISTANCE, 2);
+
+    Set Global Variable(
+      LEGEND_LOCATION,
+      Add(
+        Divide(
+          Add(
+            Global Variable(LARGE_HP_TOGGLE_LOCATION), 
+            Global Variable(SMALL_HP_TOGGLE_LOCATION)
+          ),
+          2
+        ),
+        Vector(0, 3, 0)
+      )
+    );
 	}
 }
 
-rule("SET HP LOCATIONS") {
+// Healthpack locations database
+rule("SET HP_LOCATIONS") {
+	event {
+		Ongoing - Global;
+	}
+
+	actions {
+		// Large healthpacks
+		Set Global Variable(HP_LOCATIONS_LARGE, Empty Array);
+		Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(14.790, -5.000, -96.070)));
+		Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(12.910, -1.230, -48.880)));
+		Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(29.880, 3, -89.790)));
+		Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(-13.060, 1, -61.360)));
+		Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(7.430, 4, 16.710)));
+		Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(7.850, -1.160, 35.790)));
+		Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(35.610, 0.350, 17.110)));
+		Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(45.060, 1, -0.650)));
+
+		// Small healthpacks
+		Set Global Variable(HP_LOCATIONS_SMALL, Empty Array);
+		Set Global Variable(HP_LOCATIONS_SMALL, Append To Array(Global Variable(HP_LOCATIONS_SMALL), Vector(-0.97, -1.00, -97.57)));
+		Set Global Variable(HP_LOCATIONS_SMALL, Append To Array(Global Variable(HP_LOCATIONS_SMALL), Vector(-0.63, -5.10, -74.13)));
+		Set Global Variable(HP_LOCATIONS_SMALL, Append To Array(Global Variable(HP_LOCATIONS_SMALL), Vector(29.87, -1.88, -65.23)));
+		Set Global Variable(HP_LOCATIONS_SMALL, Append To Array(Global Variable(HP_LOCATIONS_SMALL), Vector(38.69, -1.90, -39.00)));
+		Set Global Variable(HP_LOCATIONS_SMALL, Append To Array(Global Variable(HP_LOCATIONS_SMALL), Vector(-0.66, 1.00, -36.64)));
+		Set Global Variable(HP_LOCATIONS_SMALL, Append To Array(Global Variable(HP_LOCATIONS_SMALL), Vector(2.09, 1.00, -21.97)));
+		Set Global Variable(HP_LOCATIONS_SMALL, Append To Array(Global Variable(HP_LOCATIONS_SMALL), Vector(25.53, 0.02, -23.56)));
+		Set Global Variable(HP_LOCATIONS_SMALL, Append To Array(Global Variable(HP_LOCATIONS_SMALL), Vector(52.03, 2.00, -28.10)));
+		Set Global Variable(HP_LOCATIONS_SMALL, Append To Array(Global Variable(HP_LOCATIONS_SMALL), Vector(40.96, 0.30, 34.56)));
+
+		// Assing to container
+		Set Global Variable(HP_LOCATIONS, Empty Array);
+		Set Global Variable At Index(HP_LOCATIONS, Global Variable(KEY_HEALTHPACK_TYPE_LARGE), Global Variable(HP_LOCATIONS_LARGE));
+		Set Global Variable At Index(HP_LOCATIONS, Global Variable(KEY_HEALTHPACK_TYPE_SMALL), Global Variable(HP_LOCATIONS_SMALL));
+	}
+}
+
+// Player-specific state variables
+rule("INIT PLAYER STATE") {
 	event {
 		Ongoing - Each Player;
 		All;
@@ -33,19 +97,204 @@ rule("SET HP LOCATIONS") {
 	}
 
 	actions {
-		Set Global Variable(HP_LOCATIONS, Empty Array);
-		Set Global Variable(HP_LOCATIONS, Append To Array(Global Variable(HP_LOCATIONS), Vector(12.910, -1.230, -48.880)));
-		Set Global Variable(HP_LOCATIONS, Append To Array(Global Variable(HP_LOCATIONS), Vector(14.790, -5.000, -96.070)));
-		Set Global Variable(HP_LOCATIONS, Append To Array(Global Variable(HP_LOCATIONS), Vector(29.880, 3, -89.790)));
-		Set Global Variable(HP_LOCATIONS, Append To Array(Global Variable(HP_LOCATIONS), Vector(-13.060, 1, -61.360)));
-		Set Global Variable(HP_LOCATIONS, Append To Array(Global Variable(HP_LOCATIONS), Vector(7.430, 4, 16.710)));
-		Set Global Variable(HP_LOCATIONS, Append To Array(Global Variable(HP_LOCATIONS), Vector(7.850, -1.160, 35.790)));
-		Set Global Variable(HP_LOCATIONS, Append To Array(Global Variable(HP_LOCATIONS), Vector(35.610, 0.350, 17.110)));
-		Set Global Variable(HP_LOCATIONS, Append To Array(Global Variable(HP_LOCATIONS), Vector(45.060, 1, -0.650)));
+		Set Player Variable(Event Player, CURRENT_HP_IDX, 0);
+		Set Player Variable(Event Player, CURRENT_HP_TYPE, Global Variable(KEY_HEALTHPACK_TYPE_LARGE));
 	}
 }
 
-rule("CREATE BEAM") {
+// Workshop description
+rule("CREATE LEGEND") {
+  event {
+    Ongoing - Global;
+  }
+
+  actions {
+    Create In-World Text(
+      All Players(All Teams), 
+      Custom String("Healthpack Memorizer", Null, Null, Null), 
+      Global Variable(LEGEND_LOCATION), 
+      1.5,
+      Clip Against Surfaces,
+      Visible To Position and String, 
+      Red,
+      Default Visibility
+    );
+    Create In-World Text(
+      All Players(All Teams), 
+      Custom String("This workshop will help you memorize healhpack locations.", Null, Null, Null), 
+      Subtract(
+        Global Variable(LEGEND_LOCATION),
+        Vector(0, 0.3, 0)
+      ), 
+      1,
+      Clip Against Surfaces,
+      Visible To Position and String, 
+      White,
+      Default Visibility
+    );
+    Create In-World Text(
+      All Players(All Teams), 
+      Custom String("Please see description for more details.", Null, Null, Null), 
+      Subtract(
+        Global Variable(LEGEND_LOCATION),
+        Vector(0, 0.5, 0)
+      ), 
+      1,
+      Clip Against Surfaces,
+      Visible To Position and String, 
+      White,
+      Default Visibility
+    );
+  }
+}
+
+// Control orbs - not interactable yet
+rule("CREATE CONTROLS") {
+  event {
+    Ongoing - Global;
+  }
+
+  actions {
+    Create In-World Text(
+      All Players(All Teams), 
+      Custom String("PRESS F TO SET ROUTE LARGE HEALTH PACKS", Null, Null, Null), 
+      Add(
+		    Global Variable(LARGE_HP_TOGGLE_LOCATION), 
+        Vector(0, 0.25, 0)
+      ), 
+      1.5,
+      Clip Against Surfaces,
+      Visible To Position and String, 
+      White,
+      Default Visibility
+    );
+    Create Effect(
+      All Players(All Teams), 
+      Orb, 
+      Green, 
+      Global Variable(LARGE_HP_TOGGLE_LOCATION), 
+      1, 
+      Visible To Position and Radius
+    );
+
+    Create In-World Text(
+      All Players(All Teams), 
+      Custom String("PRESS F TO SELECT SMALL HEALTH PACKS", Null, Null, Null), 
+      Add(
+		    Global Variable(SMALL_HP_TOGGLE_LOCATION), 
+        Vector(0, 0.25, 0)
+      ), 
+      1.5,
+      Clip Against Surfaces,
+      Visible To Position and String, 
+      White,
+      Default Visibility
+    );
+    Create Effect(
+      All Players(All Teams), 
+      Orb, 
+      Aqua, 
+      Global Variable(SMALL_HP_TOGGLE_LOCATION), 
+      1, 
+      Visible To Position and Radius
+    );
+  }
+}
+
+// Add interaction to large HP control orb
+rule("BIND ACTION ON LARGE CONTROL") {
+  event {
+    Ongoing - Each Player;
+    All;
+    All;
+  }
+
+  conditions {
+    Is Button Held(Event Player, Interact) == True;
+    Distance Between(
+      Position Of(Event Player), 
+      Global Variable(LARGE_HP_TOGGLE_LOCATION)
+    ) < Global Variable(TOGGLE_LOCATION_DISTANCE);
+  }
+
+  actions {
+    Set Player Variable(Event Player, CURRENT_HP_IDX, 0);
+    Set Player Variable(
+      Event Player,
+      CURRENT_HP_TYPE,
+      Global Variable(KEY_HEALTHPACK_TYPE_LARGE)
+    );
+    Play Effect(
+      All Players(All Teams), 
+      Good Explosion, 
+      Green, 
+      Global Variable(LARGE_HP_TOGGLE_LOCATION), 
+      1.25
+    );
+  }
+}
+
+// Add interaction to small HP control orb
+rule("BIND ACTION ON SMALL CONTROL") {
+  event {
+    Ongoing - Each Player;
+    All;
+    All;
+  }
+
+  conditions {
+    Is Button Held(Event Player, Interact) == True;
+    Distance Between(
+      Position Of(Event Player), 
+      Global Variable(SMALL_HP_TOGGLE_LOCATION)
+    ) < Global Variable(TOGGLE_LOCATION_DISTANCE);
+  }
+
+  actions {
+    Set Player Variable(Event Player, CURRENT_HP_IDX, 0);
+    Set Player Variable(
+      Event Player,
+      CURRENT_HP_TYPE,
+      Global Variable(KEY_HEALTHPACK_TYPE_SMALL)
+    );
+		Play Effect(
+      All Players(All Teams), 
+      Good Explosion, 
+      Aqua, 
+      Global Variable(SMALL_HP_TOGGLE_LOCATION), 
+      1.25
+    );
+  }
+}
+
+// Debugging information
+rule("SET LOCATION HUD") {
+	event {
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	actions { 
+    // Player's posistion
+    Create HUD Text(
+      Event Player, 
+      Position Of(Event Player), 
+      Null, 
+      Null,
+      Left, 
+      0, 
+      White, 
+      White, 
+      White, 
+      Visible To and String,
+			Default Visibility
+    );
+	}
+}
+
+// Create guide beam to the HP
+rule("CREATE WAYPOINT BEAM") {
 	event {
 		Ongoing - Each Player;
 		All;
@@ -57,12 +306,22 @@ rule("CREATE BEAM") {
 	}
 
 	actions {
-		Create Beam Effect(All Players(All Teams), Good Beam, Event Player, Value In Array(Global Variable(HP_LOCATIONS), Player Variable(
-			Event Player, HP_LOCATION_IDX)), Aqua, Visible To Position and Radius);
+		Create Beam Effect(
+			All Players(All Teams), 
+			Good Beam, 
+			Event Player,
+			Value In Array(
+				Value In Array(Global Variable(HP_LOCATIONS), Player Variable(Event Player, CURRENT_HP_TYPE)),
+				Player Variable(Event Player, CURRENT_HP_IDX)
+			),
+			Green, 
+			Visible To Position and Radius
+		);
 	}
 }
 
-rule("UPDATE BEAM") {
+// Update guided beam if any of player state veariables change
+rule("UPDATE WAYPOINT BEAM") {
 	event {
 		Ongoing - Each Player;
 		All;
@@ -70,22 +329,41 @@ rule("UPDATE BEAM") {
 	}
 
 	conditions {
-		Distance Between(Position Of(Event Player), Value In Array(Global Variable(HP_LOCATIONS), Player Variable(Event Player,
-			HP_LOCATION_IDX))) < 3;
+		Distance Between(
+      Position Of(Event Player), 
+      Value In Array(
+        Value In Array(Global Variable(HP_LOCATIONS), Player Variable(Event Player, CURRENT_HP_TYPE)),
+        Player Variable(Event Player, CURRENT_HP_IDX)
+      )
+    ) < 3;
 	}
 
 	actions {
-		Set Player Variable(Event Player, HP_LOCATION_IDX, Add(Player Variable(Event Player, HP_LOCATION_IDX), 1));
+		Set Player Variable(
+      Event Player, 
+      CURRENT_HP_IDX, 
+      Add(Player Variable(Event Player, CURRENT_HP_IDX), 1)
+    );
 		Play Effect(All Players(All Teams), Good Explosion, Aqua, Event Player, 1);
 	}
 }
 
-rule("") {
-	event {
-		Ongoing - Global;
-	}
+// Reset player's current hp idx when reached the end of the HP_LOCATIONS array
+rule("RESET CURRENT_HP_IDX") {
+  event {
+    Ongoing - Each Player;
+    All;
+    All;
+  }
 
-	actions {
-		Set Global Variable(STATE, Value In Array(Global Variable(STATE), 0));
-	}
+  conditions {
+    Value In Array(
+      Value In Array(Global Variable(HP_LOCATIONS), Player Variable(Event Player, CURRENT_HP_TYPE)),
+      Player Variable(Event Player, CURRENT_HP_IDX)
+    ) == 0;
+  }
+
+  actions {
+    Set Player Variable(Event Player, CURRENT_HP_IDX, 0);
+  }
 }
