@@ -1,7 +1,7 @@
 variables {
   global:
     // Locations
-    0: HP_LOCATIONS // HP_LOCATIONS[MAP_NAME][HP_TYPE]
+    0: HP_LOCATIONS 
     1: HP_LOCATIONS_LARGE
     2: HP_LOCATIONS_SMALL
 
@@ -15,7 +15,8 @@ variables {
     7: TOGGLE_LOCATION_DISTANCE
     8: LEGEND_LOCATION
 
-    // Service array to fasten HP info collection
+    // Variables to build information arrays.
+    // Useful when getting information from workshop inspector
     9: SMALL_HP_INFO
     10: LARGE_HP_INFO
 
@@ -40,8 +41,6 @@ rule("INIT VARIABLES") {
     Set Global Variable(LEGEND_LOCATION, Vector(0, 0, 0));
     Set Global Variable(TOGGLE_LOCATION_DISTANCE, 2);
 
-    // Variables to build information arrays.
-    // Useful when getting information from workshop inspector
     Set Global Variable(SMALL_HP_INFO, Empty Array);
     Set Global Variable(LARGE_HP_INFO, Empty Array);
   }
