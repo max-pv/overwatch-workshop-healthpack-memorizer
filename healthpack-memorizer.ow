@@ -1,7 +1,7 @@
 variables {
   global:
     // Locations
-    0: HP_LOCATIONS
+    0: HP_LOCATIONS 
     1: HP_LOCATIONS_LARGE
     2: HP_LOCATIONS_SMALL
 
@@ -14,6 +14,11 @@ variables {
     6: LARGE_HP_TOGGLE_LOCATION
     7: TOGGLE_LOCATION_DISTANCE
     8: LEGEND_LOCATION
+
+    // Variables to build information arrays.
+    // Useful when getting information from workshop inspector
+    9: SMALL_HP_INFO
+    10: LARGE_HP_INFO
 
   player:
     0: CURRENT_HP_TYPE
@@ -30,34 +35,50 @@ rule("INIT VARIABLES") {
     Set Global Variable(KEY_HEALTHPACK_TYPE_LARGE, 0);
     Set Global Variable(KEY_HEALTHPACK_TYPE_SMALL, 1);
 
-    // Controls location
-    Set Global Variable(SMALL_HP_TOGGLE_LOCATION, Vector(-41.69, 1, -106.96));
-    Set Global Variable(LARGE_HP_TOGGLE_LOCATION, Vector(-38.69, 1, -109.96));
+    // Deafult controls location
+    Set Global Variable(SMALL_HP_TOGGLE_LOCATION, Vector(0, 0, 0));
+    Set Global Variable(LARGE_HP_TOGGLE_LOCATION, Vector(0, 0, 0));
+    Set Global Variable(LEGEND_LOCATION, Vector(0, 0, 0));
     Set Global Variable(TOGGLE_LOCATION_DISTANCE, 2);
 
-    Set Global Variable(
-      LEGEND_LOCATION,
-      Add(
-        Divide(
-          Add(
-            Global Variable(LARGE_HP_TOGGLE_LOCATION), 
-            Global Variable(SMALL_HP_TOGGLE_LOCATION)
-          ),
-          2
-        ),
-        Vector(0, 3, 0)
-      )
-    );
+    Set Global Variable(SMALL_HP_INFO, Empty Array);
+    Set Global Variable(LARGE_HP_INFO, Empty Array);
   }
 }
 
 // Healthpack locations database
-rule("SET HP_LOCATIONS") {
+rule("INITIALIZE HP_LOCATIONS") {
   event {
     Ongoing - Global;
   }
 
   actions {
+    // Large healthpacks
+    Set Global Variable(HP_LOCATIONS_LARGE, Null);
+    // Small healthpacks
+    Set Global Variable(HP_LOCATIONS_SMALL, Null);
+
+    // Assing to container
+    Set Global Variable(HP_LOCATIONS, Empty Array);
+    Set Global Variable At Index(HP_LOCATIONS, Global Variable(KEY_HEALTHPACK_TYPE_LARGE), Global Variable(HP_LOCATIONS_LARGE));
+    Set Global Variable At Index(HP_LOCATIONS, Global Variable(KEY_HEALTHPACK_TYPE_SMALL), Global Variable(HP_LOCATIONS_SMALL));
+  }
+}
+
+rule("INIT MAP_HANAMURA") {
+  event {
+    Ongoing - Global;
+  }
+
+  conditions {
+    Current Map == Map(Hanamura);
+  }
+
+  actions {
+    // Controls Locations
+    Set Global Variable(SMALL_HP_TOGGLE_LOCATION, Vector(-41.69, 1, -106.96));
+    Set Global Variable(LARGE_HP_TOGGLE_LOCATION, Vector(-38.69, 1, -109.96));
+
     // Large healthpacks
     Set Global Variable(HP_LOCATIONS_LARGE, Empty Array);
     Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(14.790, -5.000, -96.070)));
@@ -85,6 +106,72 @@ rule("SET HP_LOCATIONS") {
     Set Global Variable(HP_LOCATIONS, Empty Array);
     Set Global Variable At Index(HP_LOCATIONS, Global Variable(KEY_HEALTHPACK_TYPE_LARGE), Global Variable(HP_LOCATIONS_LARGE));
     Set Global Variable At Index(HP_LOCATIONS, Global Variable(KEY_HEALTHPACK_TYPE_SMALL), Global Variable(HP_LOCATIONS_SMALL));
+  }
+}
+
+rule("INIT MAP_DORADO") {
+  event {
+    Ongoing - Global;
+  }
+
+  conditions {
+    Current Map == Map(Dorado);
+  }
+
+  actions {
+    // Controls Locations
+    Set Global Variable(SMALL_HP_TOGGLE_LOCATION, Vector(141.05, 11.00, 4.90));
+    Set Global Variable(LARGE_HP_TOGGLE_LOCATION, Vector(142.15, 11.00, 1.12));
+
+    // Large healthpacks
+    Set Global Variable(HP_LOCATIONS_LARGE, Empty Array);
+    Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(61.44, 9.09, 7.43)));
+    Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(32.76, 4.10, -38.85)));
+    Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(82.38, 8.86, -51.78)));
+    Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(130.53, 9.11, -26.73)));
+    Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(87.08, 12.84, 38.54)));
+    Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(151.80, 10.10, 15.22)));
+    Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(173.77, 11.10, 18.57)));
+    Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(144.81, 16.10, 70.39)));
+
+    // Small healthpacks
+    Set Global Variable(HP_LOCATIONS_SMALL, Empty Array);
+    Set Global Variable(HP_LOCATIONS_SMALL, Append To Array(Global Variable(HP_LOCATIONS_SMALL), Vector(13.29, -1.99, 16.47)));
+    Set Global Variable(HP_LOCATIONS_SMALL, Append To Array(Global Variable(HP_LOCATIONS_SMALL), Vector(37.65, 2.01, 11.55)));
+    Set Global Variable(HP_LOCATIONS_SMALL, Append To Array(Global Variable(HP_LOCATIONS_SMALL), Vector(51.70, 7.01, -9.50)));
+    Set Global Variable(HP_LOCATIONS_SMALL, Append To Array(Global Variable(HP_LOCATIONS_SMALL), Vector(90.76, 9.00, -26.21)));
+    Set Global Variable(HP_LOCATIONS_SMALL, Append To Array(Global Variable(HP_LOCATIONS_SMALL), Vector(109.25, 11.01, -35.54)));
+    Set Global Variable(HP_LOCATIONS_SMALL, Append To Array(Global Variable(HP_LOCATIONS_SMALL), Vector(101.65, 12.00, 18.31)));
+    Set Global Variable(HP_LOCATIONS_SMALL, Append To Array(Global Variable(HP_LOCATIONS_SMALL), Vector(134.17, 11.01, 48.97)));
+    Set Global Variable(HP_LOCATIONS_SMALL, Append To Array(Global Variable(HP_LOCATIONS_SMALL), Vector(170.68, 12.01, 64.60)));
+    Set Global Variable(HP_LOCATIONS_SMALL, Append To Array(Global Variable(HP_LOCATIONS_SMALL), Vector(190.87, 12.00, 68.60)));
+
+    // Assing to container
+    Set Global Variable(HP_LOCATIONS, Empty Array);
+    Set Global Variable At Index(HP_LOCATIONS, Global Variable(KEY_HEALTHPACK_TYPE_LARGE), Global Variable(HP_LOCATIONS_LARGE));
+    Set Global Variable At Index(HP_LOCATIONS, Global Variable(KEY_HEALTHPACK_TYPE_SMALL), Global Variable(HP_LOCATIONS_SMALL));
+  }
+}
+
+rule("CALCULATE LEGEND COORDINATES") {
+  event {
+    Ongoing - Global;
+  }
+
+  actions {
+    Set Global Variable(
+      LEGEND_LOCATION,
+      Add(
+        Divide(
+          Add(
+            Global Variable(LARGE_HP_TOGGLE_LOCATION), 
+            Global Variable(SMALL_HP_TOGGLE_LOCATION)
+          ),
+          2
+        ),
+        Vector(0, 3, 0)
+      )
+    );
   }
 }
 
@@ -365,5 +452,52 @@ rule("RESET CURRENT_HP_IDX") {
 
   actions {
     Set Player Variable(Event Player, CURRENT_HP_IDX, 0);
+  }
+}
+
+
+rule("BUILD SMALL HP INFORMATION ARRAY") {
+  event {
+    Ongoing - Each Player;
+    All;
+    All;
+  }
+
+  conditions {
+    Is Button Held(Event Player, Crouch) == True;
+  }
+
+  actions {
+    Set Global Variable(
+      SMALL_HP_INFO,
+      Append To Array(
+        Global Variable(SMALL_HP_INFO),
+        Position Of(Event Player)
+      )
+    );
+    Play Effect(All Players(All Teams), Good Explosion, Aqua, Event Player, 1);
+  }
+}
+
+rule("BUILD LARGE HP INFORMATION ARRAY") {
+  event {
+    Ongoing - Each Player;
+    All;
+    All;
+  }
+
+  conditions {
+    Is Button Held(Event Player, Jump) == True;
+  }
+
+  actions {
+    Set Global Variable(
+      LARGE_HP_INFO,
+      Append To Array(
+        Global Variable(LARGE_HP_INFO),
+        Position Of(Event Player)
+      )
+    );
+    Play Effect(All Players(All Teams), Good Explosion, Green, Event Player, 1);
   }
 }
