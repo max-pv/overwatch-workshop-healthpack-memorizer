@@ -1,0 +1,43 @@
+rule("INIT MAP_HANAMURA") {
+  event {
+    Ongoing - Global;
+  }
+
+  conditions {
+    Current Map == Map(Hanamura);
+  }
+
+  actions {
+    // Controls Locations
+    Set Global Variable(SMALL_HP_TOGGLE_LOCATION, Vector(-41.69, 1, -106.96));
+    Set Global Variable(LARGE_HP_TOGGLE_LOCATION, Vector(-38.69, 1, -109.96));
+
+    // Large healthpacks
+    Set Global Variable(HP_LOCATIONS_LARGE, Empty Array);
+    Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(14.790, -5.000, -96.070)));
+    Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(12.910, -1.230, -48.880)));
+    Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(29.880, 3, -89.790)));
+    Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(-13.060, 1, -61.360)));
+    Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(7.430, 4, 16.710)));
+    Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(7.850, -1.160, 35.790)));
+    Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(35.610, 0.350, 17.110)));
+    Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(45.060, 1, -0.650)));
+
+    // Small healthpacks
+    Set Global Variable(HP_LOCATIONS_SMALL, Empty Array);
+    Set Global Variable(HP_LOCATIONS_SMALL, Append To Array(Global Variable(HP_LOCATIONS_SMALL), Vector(-0.97, -1.00, -97.57)));
+    Set Global Variable(HP_LOCATIONS_SMALL, Append To Array(Global Variable(HP_LOCATIONS_SMALL), Vector(-0.63, -5.10, -74.13)));
+    Set Global Variable(HP_LOCATIONS_SMALL, Append To Array(Global Variable(HP_LOCATIONS_SMALL), Vector(29.87, -1.88, -65.23)));
+    Set Global Variable(HP_LOCATIONS_SMALL, Append To Array(Global Variable(HP_LOCATIONS_SMALL), Vector(38.69, -1.90, -39.00)));
+    Set Global Variable(HP_LOCATIONS_SMALL, Append To Array(Global Variable(HP_LOCATIONS_SMALL), Vector(-0.66, 1.00, -36.64)));
+    Set Global Variable(HP_LOCATIONS_SMALL, Append To Array(Global Variable(HP_LOCATIONS_SMALL), Vector(2.09, 1.00, -21.97)));
+    Set Global Variable(HP_LOCATIONS_SMALL, Append To Array(Global Variable(HP_LOCATIONS_SMALL), Vector(25.53, 0.02, -23.56)));
+    Set Global Variable(HP_LOCATIONS_SMALL, Append To Array(Global Variable(HP_LOCATIONS_SMALL), Vector(52.03, 2.00, -28.10)));
+    Set Global Variable(HP_LOCATIONS_SMALL, Append To Array(Global Variable(HP_LOCATIONS_SMALL), Vector(40.96, 0.30, 34.56)));
+
+    // Assing to container
+    Set Global Variable(HP_LOCATIONS, Empty Array);
+    Set Global Variable At Index(HP_LOCATIONS, Global Variable(KEY_HEALTHPACK_TYPE_LARGE), Global Variable(HP_LOCATIONS_LARGE));
+    Set Global Variable At Index(HP_LOCATIONS, Global Variable(KEY_HEALTHPACK_TYPE_SMALL), Global Variable(HP_LOCATIONS_SMALL));
+  }
+}

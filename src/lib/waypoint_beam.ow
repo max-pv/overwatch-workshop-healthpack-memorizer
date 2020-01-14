@@ -1,0 +1,54 @@
+// Create guide beam to the HP
+rule("CREATE WAYPOINT BEAM") {
+  event {
+    Ongoing - Each Player;
+    All;
+    All;
+  }
+
+  conditions {
+    Has Spawned(Event Player) == True;
+  }
+
+  actions {
+    Create Beam Effect(
+      All Players(All Teams), 
+      Good Beam, 
+      Event Player,
+      Value In Array(
+        Value In Array(Global Variable(HP_LOCATIONS), Player Variable(Event Player, CURRENT_HP_TYPE)),
+        Player Variable(Event Player, CURRENT_HP_IDX)
+      ),
+      Green, 
+      Visible To Position and Radius
+    );
+  }
+}
+
+// Update guided beam if any of player state veariables change
+rule("UPDATE WAYPOINT BEAM") {
+  event {
+    Ongoing - Each Player;
+    All;
+    All;
+  }
+
+  conditions {
+    Distance Between(
+      Position Of(Event Player), 
+      Value In Array(
+        Value In Array(Global Variable(HP_LOCATIONS), Player Variable(Event Player, CURRENT_HP_TYPE)),
+        Player Variable(Event Player, CURRENT_HP_IDX)
+      )
+    ) < 3;
+  }
+
+  actions {
+    Set Player Variable(
+      Event Player, 
+      CURRENT_HP_IDX, 
+      Add(Player Variable(Event Player, CURRENT_HP_IDX), 1)
+    );
+    Play Effect(All Players(All Teams), Good Explosion, Aqua, Event Player, 1);
+  }
+}

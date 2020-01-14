@@ -1,0 +1,24 @@
+{
+  "name": "overwatch-healthpack-memorizer",
+  "version": "1.0.0",
+  "description": "This Overwatch Workshop will help you to memorize locations of healthpacks on different maps.",
+  "main": "index.js",
+  "scripts": {
+    "start": "gulp",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/br4in3x/overwatch-workshop-healthpack-memorizer.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/br4in3x/overwatch-workshop-healthpack-memorizer/issues"
+  },
+  "homepage": "https://github.com/br4in3x/overwatch-workshop-healthpack-memorizer#readme",
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-nunjucks": "^5.0.1"
+  }
+}

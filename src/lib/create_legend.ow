@@ -1,0 +1,66 @@
+rule("CALCULATE LEGEND COORDINATES") {
+  event {
+    Ongoing - Global;
+  }
+
+  actions {
+    Set Global Variable(
+      LEGEND_LOCATION,
+      Add(
+        Divide(
+          Add(
+            Global Variable(LARGE_HP_TOGGLE_LOCATION), 
+            Global Variable(SMALL_HP_TOGGLE_LOCATION)
+          ),
+          2
+        ),
+        Vector(0, 3, 0)
+      )
+    );
+  }
+}
+
+rule("CREATE LEGEND") {
+  event {
+    Ongoing - Global;
+  }
+
+  actions {
+    Create In-World Text(
+      All Players(All Teams), 
+      Custom String("Healthpack Memorizer", Null, Null, Null), 
+      Global Variable(LEGEND_LOCATION), 
+      1.5,
+      Clip Against Surfaces,
+      Visible To Position and String, 
+      Red,
+      Default Visibility
+    );
+    Create In-World Text(
+      All Players(All Teams), 
+      Custom String("This workshop will help you memorize healhpack locations.", Null, Null, Null), 
+      Subtract(
+        Global Variable(LEGEND_LOCATION),
+        Vector(0, 0.3, 0)
+      ), 
+      1,
+      Clip Against Surfaces,
+      Visible To Position and String, 
+      White,
+      Default Visibility
+    );
+    Create In-World Text(
+      All Players(All Teams), 
+      Custom String("Please see description for more details.", Null, Null, Null), 
+      Subtract(
+        Global Variable(LEGEND_LOCATION),
+        Vector(0, 0.5, 0)
+      ), 
+      1,
+      Clip Against Surfaces,
+      Visible To Position and String, 
+      White,
+      Default Visibility
+    );
+  }
+}

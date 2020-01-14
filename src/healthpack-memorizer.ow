@@ -1,0 +1,21 @@
+// Initialize variables
+{% include 'lib/init_variables.ow' %}
+
+// MAPS DATABASE
+{% include 'maps/hanamura.ow' %}
+{% include 'maps/dorado.ow' %}
+
+// Workshop description
+{% include 'lib/create_legend.ow' %}
+
+// Creating controls
+{% include 'lib/create_controls.ow' %}
+
+// Waypoint creation and updating rules
+{% include 'lib/waypoint_beam.ow' %}
+
+// Reset player's current hp idx when reached the end of the HP_LOCATIONS array
+{% include 'lib/reset_current_hp_idx.ow' %}
+
+// Debugging & development tools
+{% include 'lib/debug.ow' %}
