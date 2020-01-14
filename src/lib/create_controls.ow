@@ -1,0 +1,118 @@
+// Control orbs - not interactable yet
+rule("CREATE CONTROLS") {
+  event {
+    Ongoing - Global;
+  }
+
+  actions {
+    Create In-World Text(
+      All Players(All Teams), 
+      Custom String("PRESS F TO SET ROUTE LARGE HEALTH PACKS", Null, Null, Null), 
+      Add(
+        Global Variable(LARGE_HP_TOGGLE_LOCATION), 
+        Vector(0, 0.25, 0)
+      ), 
+      1.5,
+      Clip Against Surfaces,
+      Visible To Position and String, 
+      White,
+      Default Visibility
+    );
+    Create Effect(
+      All Players(All Teams), 
+      Orb, 
+      Green, 
+      Global Variable(LARGE_HP_TOGGLE_LOCATION), 
+      1, 
+      Visible To Position and Radius
+    );
+
+    Create In-World Text(
+      All Players(All Teams), 
+      Custom String("PRESS F TO SELECT SMALL HEALTH PACKS", Null, Null, Null), 
+      Add(
+        Global Variable(SMALL_HP_TOGGLE_LOCATION), 
+        Vector(0, 0.25, 0)
+      ), 
+      1.5,
+      Clip Against Surfaces,
+      Visible To Position and String, 
+      White,
+      Default Visibility
+    );
+    Create Effect(
+      All Players(All Teams), 
+      Orb, 
+      Aqua, 
+      Global Variable(SMALL_HP_TOGGLE_LOCATION), 
+      1, 
+      Visible To Position and Radius
+    );
+  }
+}
+
+// Add interaction to large HP control orb
+rule("BIND ACTION ON LARGE CONTROL") {
+  event {
+    Ongoing - Each Player;
+    All;
+    All;
+  }
+
+  conditions {
+    Is Button Held(Event Player, Interact) == True;
+    Distance Between(
+      Position Of(Event Player), 
+      Global Variable(LARGE_HP_TOGGLE_LOCATION)
+    ) < Global Variable(TOGGLE_LOCATION_DISTANCE);
+  }
+
+  actions {
+    Set Player Variable(Event Player, CURRENT_HP_IDX, 0);
+    Set Player Variable(
+      Event Player,
+      CURRENT_HP_TYPE,
+      Global Variable(KEY_HEALTHPACK_TYPE_LARGE)
+    );
+    Play Effect(
+      All Players(All Teams), 
+      Good Explosion, 
+      Green, 
+      Global Variable(LARGE_HP_TOGGLE_LOCATION), 
+      1.25
+    );
+  }
+}
+
+// Add interaction to small HP control orb
+rule("BIND ACTION ON SMALL CONTROL") {
+  event {
+    Ongoing - Each Player;
+    All;
+    All;
+  }
+
+  conditions {
+    Is Button Held(Event Player, Interact) == True;
+    Distance Between(
+      Position Of(Event Player), 
+      Global Variable(SMALL_HP_TOGGLE_LOCATION)
+    ) < Global Variable(TOGGLE_LOCATION_DISTANCE);
+  }
+
+  actions {
+    Set Player Variable(Event Player, CURRENT_HP_IDX, 0);
+    Set Player Variable(
+      Event Player,
+      CURRENT_HP_TYPE,
+      Global Variable(KEY_HEALTHPACK_TYPE_SMALL)
+    );
+    Play Effect(
+      All Players(All Teams), 
+      Good Explosion, 
+      Aqua, 
+      Global Variable(SMALL_HP_TOGGLE_LOCATION), 
+      1.25
+    );
+  }
+}

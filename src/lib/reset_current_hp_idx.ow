@@ -1,0 +1,18 @@
+rule("RESET CURRENT_HP_IDX") {
+  event {
+    Ongoing - Each Player;
+    All;
+    All;
+  }
+
+  conditions {
+    Value In Array(
+      Value In Array(Global Variable(HP_LOCATIONS), Player Variable(Event Player, CURRENT_HP_TYPE)),
+      Player Variable(Event Player, CURRENT_HP_IDX)
+    ) == 0;
+  }
+
+  actions {
+    Set Player Variable(Event Player, CURRENT_HP_IDX, 0);
+  }
+}

@@ -7,4 +7,21 @@ Currently supporrted:
 - Hanamura
 - Dorado
 
-To use the configuration, copy the contents of `healthpack-memorizer.ow` file and paste it into Workshop Editor.
+To use the configuration, copy the contents of `dist/healthpack-memorizer.ow` file and paste it into Workshop Editor.
+
+## Development
+
+In order to start development, clone this repository (or download it's copy) and in the terminal navigate to the folder where you cloned / unzippeed this folder. In that folder, run:
+
+```bash
+npm install
+npm start
+```
+
+At this moment you can start chaning files in `src` directory and see the resulting script in `src` directory follows your updates.
+
+## ToDo
+
+- User Spawn location
+- Calculate coords of contrrols and legend
+- Add another maps

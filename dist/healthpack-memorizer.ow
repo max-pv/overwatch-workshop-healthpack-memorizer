@@ -1,3 +1,4 @@
+// Initialize variables
 variables {
   global:
     // Locations
@@ -25,7 +26,6 @@ variables {
     1: CURRENT_HP_IDX
 }
 
-// Initialize variables
 rule("INIT VARIABLES") {
   event {
     Ongoing - Global;
@@ -65,6 +65,21 @@ rule("INITIALIZE HP_LOCATIONS") {
   }
 }
 
+// Player-specific state variables
+rule("INIT PLAYER STATE") {
+  event {
+    Ongoing - Each Player;
+    All;
+    All;
+  }
+
+  actions {
+    Set Player Variable(Event Player, CURRENT_HP_IDX, 0);
+    Set Player Variable(Event Player, CURRENT_HP_TYPE, Global Variable(KEY_HEALTHPACK_TYPE_LARGE));
+  }
+}
+
+// MAPS DATABASE
 rule("INIT MAP_HANAMURA") {
   event {
     Ongoing - Global;
@@ -108,7 +123,6 @@ rule("INIT MAP_HANAMURA") {
     Set Global Variable At Index(HP_LOCATIONS, Global Variable(KEY_HEALTHPACK_TYPE_SMALL), Global Variable(HP_LOCATIONS_SMALL));
   }
 }
-
 rule("INIT MAP_DORADO") {
   event {
     Ongoing - Global;
@@ -153,6 +167,7 @@ rule("INIT MAP_DORADO") {
   }
 }
 
+// Workshop description
 rule("CALCULATE LEGEND COORDINATES") {
   event {
     Ongoing - Global;
@@ -175,21 +190,6 @@ rule("CALCULATE LEGEND COORDINATES") {
   }
 }
 
-// Player-specific state variables
-rule("INIT PLAYER STATE") {
-  event {
-    Ongoing - Each Player;
-    All;
-    All;
-  }
-
-  actions {
-    Set Player Variable(Event Player, CURRENT_HP_IDX, 0);
-    Set Player Variable(Event Player, CURRENT_HP_TYPE, Global Variable(KEY_HEALTHPACK_TYPE_LARGE));
-  }
-}
-
-// Workshop description
 rule("CREATE LEGEND") {
   event {
     Ongoing - Global;
@@ -235,6 +235,7 @@ rule("CREATE LEGEND") {
   }
 }
 
+// Creating controls
 // Control orbs - not interactable yet
 rule("CREATE CONTROLS") {
   event {
@@ -354,32 +355,7 @@ rule("BIND ACTION ON SMALL CONTROL") {
   }
 }
 
-// Debugging information
-rule("SET LOCATION HUD") {
-  event {
-    Ongoing - Each Player;
-    All;
-    All;
-  }
-
-  actions { 
-    // Player's posistion
-    Create HUD Text(
-      Event Player, 
-      Position Of(Event Player), 
-      Null, 
-      Null,
-      Left, 
-      0, 
-      White, 
-      White, 
-      White, 
-      Visible To and String,
-      Default Visibility
-    );
-  }
-}
-
+// Waypoint creation and updating rules
 // Create guide beam to the HP
 rule("CREATE WAYPOINT BEAM") {
   event {
@@ -455,6 +431,32 @@ rule("RESET CURRENT_HP_IDX") {
   }
 }
 
+// Debugging & development tools
+// Debugging information
+rule("SET LOCATION HUD") {
+  event {
+    Ongoing - Each Player;
+    All;
+    All;
+  }
+
+  actions { 
+    // Player's posistion
+    Create HUD Text(
+      Event Player, 
+      Position Of(Event Player), 
+      Null, 
+      Null,
+      Left, 
+      0, 
+      White, 
+      White, 
+      White, 
+      Visible To and String,
+      Default Visibility
+    );
+  }
+}
 
 rule("BUILD SMALL HP INFORMATION ARRAY") {
   event {
@@ -475,7 +477,6 @@ rule("BUILD SMALL HP INFORMATION ARRAY") {
         Position Of(Event Player)
       )
     );
-    Play Effect(All Players(All Teams), Good Explosion, Aqua, Event Player, 1);
   }
 }
 
@@ -498,6 +499,5 @@ rule("BUILD LARGE HP INFORMATION ARRAY") {
         Position Of(Event Player)
       )
     );
-    Play Effect(All Players(All Teams), Good Explosion, Green, Event Player, 1);
   }
 }

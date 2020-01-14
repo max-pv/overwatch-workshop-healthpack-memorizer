@@ -1,0 +1,69 @@
+// Debugging information
+rule("SET LOCATION HUD") {
+  event {
+    Ongoing - Each Player;
+    All;
+    All;
+  }
+
+  actions { 
+    // Player's posistion
+    Create HUD Text(
+      Event Player, 
+      Position Of(Event Player), 
+      Null, 
+      Null,
+      Left, 
+      0, 
+      White, 
+      White, 
+      White, 
+      Visible To and String,
+      Default Visibility
+    );
+  }
+}
+
+rule("BUILD SMALL HP INFORMATION ARRAY") {
+  event {
+    Ongoing - Each Player;
+    All;
+    All;
+  }
+
+  conditions {
+    Is Button Held(Event Player, Crouch) == True;
+  }
+
+  actions {
+    Set Global Variable(
+      SMALL_HP_INFO,
+      Append To Array(
+        Global Variable(SMALL_HP_INFO),
+        Position Of(Event Player)
+      )
+    );
+  }
+}
+
+rule("BUILD LARGE HP INFORMATION ARRAY") {
+  event {
+    Ongoing - Each Player;
+    All;
+    All;
+  }
+
+  conditions {
+    Is Button Held(Event Player, Jump) == True;
+  }
+
+  actions {
+    Set Global Variable(
+      LARGE_HP_INFO,
+      Append To Array(
+        Global Variable(LARGE_HP_INFO),
+        Position Of(Event Player)
+      )
+    );
+  }
+}
