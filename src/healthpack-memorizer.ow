@@ -5,11 +5,11 @@
 {% include 'maps/hanamura.ow' %}
 {% include 'maps/dorado.ow' %}
 
-// Workshop description
-{% include 'lib/create_legend.ow' %}
+// Workshop legend and controls
+{% include 'lib/create_objects.ow' %}
 
-// Creating controls
-{% include 'lib/create_controls.ow' %}
+// (Re)Spawn players in the same spot nearby controls
+{% include 'lib/spawn_players.ow' %}
 
 // Waypoint creation and updating rules
 {% include 'lib/waypoint_beam.ow' %}

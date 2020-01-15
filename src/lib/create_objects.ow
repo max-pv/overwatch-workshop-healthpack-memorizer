@@ -1,0 +1,168 @@
+{% macro create_text(content, location, size=1, color="White") %}
+  Create In-World Text(
+    All Players(All Teams), 
+    Custom String("{{ content }}", Null, Null, Null), 
+    {{ location }}, 
+    {{ size }},
+    Clip Against Surfaces,
+    Visible To Position and String, 
+    {{ color }},
+    Default Visibility
+  );
+{% endmacro %}
+
+{% macro create_effect(type, location, color, scale=1) %}
+  Create Effect(
+    All Players(All Teams), 
+    {{ type }}, 
+    {{ color }}, 
+    {{ location }}, 
+    {{ scale }}, 
+    Visible To Position and Radius
+  );
+{% endmacro %}
+
+rule("CALCULATE OBJECTS COORDS") {
+  event {
+    Ongoing - Global;
+  }
+
+  actions {
+    Set Global Variable(
+      SPAWN_LOCATION,
+      Divide(
+        Add(
+          Global Variable(SMALL_HP_TOGGLE_LOCATION),
+          Global Variable(LARGE_HP_TOGGLE_LOCATION)
+        ), 2
+      )
+    );
+
+    Set Global Variable(
+      LEGEND_LOCATION,
+      Add(Global Variable(SPAWN_LOCATION), Vector(0, 4.25, 0))
+    );
+  }
+}
+ 
+rule("CREATE CONTROLS") {
+  event {
+    Ongoing - Global;
+  }
+
+  actions {
+    {{ 
+      create_text(
+        "PRESS F TO SET ROUTE LARGE HEALTH PACKS",
+        "Add(Global Variable(LARGE_HP_TOGGLE_LOCATION), Vector(0, 0.25, 0))",
+        size=1.5
+      ) 
+    }}
+    {{ create_effect("Orb", "Global Variable(LARGE_HP_TOGGLE_LOCATION)", "Green") }}
+
+    {{ 
+      create_text(
+        "PRESS F TO SET ROUTE SMALL HEALTH PACKS",
+        "Add(Global Variable(SMALL_HP_TOGGLE_LOCATION), Vector(0, 0.25, 0))",
+        size=1.5
+      ) 
+    }}
+    {{ create_effect("Orb", "Global Variable(SMALL_HP_TOGGLE_LOCATION)", "Aqua") }}
+
+  }
+}
+
+// Add interaction to large HP control orb
+rule("BIND ACTION ON LARGE CONTROL") {
+  event {
+    Ongoing - Each Player;
+    All;
+    All;
+  }
+
+  conditions {
+    Is Button Held(Event Player, Interact) == True;
+    Distance Between(
+      Position Of(Event Player), 
+      Global Variable(LARGE_HP_TOGGLE_LOCATION)
+    ) < Global Variable(TOGGLE_LOCATION_DISTANCE);
+  }
+
+  actions {
+    Set Player Variable(Event Player, CURRENT_HP_IDX, 0);
+    Set Player Variable(
+      Event Player,
+      CURRENT_HP_TYPE,
+      Global Variable(KEY_HEALTHPACK_TYPE_LARGE)
+    );
+    Play Effect(
+      All Players(All Teams), 
+      Good Explosion, 
+      Green, 
+      Global Variable(LARGE_HP_TOGGLE_LOCATION), 
+      1.25
+    );
+  }
+}
+
+// Add interaction to small HP control orb
+rule("BIND ACTION ON SMALL CONTROL") {
+  event {
+    Ongoing - Each Player;
+    All;
+    All;
+  }
+
+  conditions {
+    Is Button Held(Event Player, Interact) == True;
+    Distance Between(
+      Position Of(Event Player), 
+      Global Variable(SMALL_HP_TOGGLE_LOCATION)
+    ) < Global Variable(TOGGLE_LOCATION_DISTANCE);
+  }
+
+  actions {
+    Set Player Variable(Event Player, CURRENT_HP_IDX, 0);
+    Set Player Variable(
+      Event Player,
+      CURRENT_HP_TYPE,
+      Global Variable(KEY_HEALTHPACK_TYPE_SMALL)
+    );
+    Play Effect(
+      All Players(All Teams), 
+      Good Explosion, 
+      Aqua, 
+      Global Variable(SMALL_HP_TOGGLE_LOCATION), 
+      1.25
+    );
+  }
+}
+
+rule("CREATE LEGEND") {
+  event {
+    Ongoing - Global;
+  }
+
+  actions {
+    {{ 
+      create_text(
+        "Healthpack Memorizer",
+        "Global Variable(LEGEND_LOCATION)",
+        size=1.5,
+        color="Red"
+      ) 
+    }}
+    {{ 
+      create_text(
+        "This workshop will help you memorize healhpack locations.",
+        "Subtract(Global Variable(LEGEND_LOCATION), Vector(0, 0.3, 0))"
+      ) 
+    }}
+    {{ 
+      create_text(
+        "Please see description for more details.",
+        "Subtract(Global Variable(LEGEND_LOCATION), Vector(0, 0.5, 0))"
+      ) 
+    }}
+  }
+}

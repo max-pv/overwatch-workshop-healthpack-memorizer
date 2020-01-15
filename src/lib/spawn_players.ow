@@ -1,0 +1,32 @@
+rule("SPAWN_PLAYERS") {
+  event {
+    Ongoing - Each Player;
+    All;
+    All;
+  }
+
+  conditions {
+    Has Spawned(Event Player) == True;
+  }
+
+  actions {
+    Teleport(Event Player, Global Variable(SPAWN_LOCATION));
+  }
+}
+
+rule("RESPAWS_PLAYERS") {
+  event {
+    Ongoing - Each Player;
+    All;
+    All;
+  }
+
+  conditions {
+    Is Dead(Event Player) == True;
+  }
+
+  actions {
+    Resurrect(Event Player);
+    Teleport(Event Player, Global Variable(SPAWN_LOCATION));
+  }
+}

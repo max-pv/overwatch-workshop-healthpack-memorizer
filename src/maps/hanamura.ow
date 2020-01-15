@@ -8,12 +8,11 @@ rule("INIT MAP_HANAMURA") {
   }
 
   actions {
-    // Controls Locations
-    Set Global Variable(SMALL_HP_TOGGLE_LOCATION, Vector(-41.69, 1, -106.96));
-    Set Global Variable(LARGE_HP_TOGGLE_LOCATION, Vector(-38.69, 1, -109.96));
+    // set objects locations
+    Set Global Variable(SMALL_HP_TOGGLE_LOCATION, Vector(-6.82, 0.5, -85.37));
+    Set Global Variable(LARGE_HP_TOGGLE_LOCATION, Vector(-11.56, 0.5, -80.90));
 
     // Large healthpacks
-    Set Global Variable(HP_LOCATIONS_LARGE, Empty Array);
     Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(14.790, -5.000, -96.070)));
     Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(12.910, -1.230, -48.880)));
     Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(29.880, 3, -89.790)));
@@ -24,7 +23,6 @@ rule("INIT MAP_HANAMURA") {
     Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(45.060, 1, -0.650)));
 
     // Small healthpacks
-    Set Global Variable(HP_LOCATIONS_SMALL, Empty Array);
     Set Global Variable(HP_LOCATIONS_SMALL, Append To Array(Global Variable(HP_LOCATIONS_SMALL), Vector(-0.97, -1.00, -97.57)));
     Set Global Variable(HP_LOCATIONS_SMALL, Append To Array(Global Variable(HP_LOCATIONS_SMALL), Vector(-0.63, -5.10, -74.13)));
     Set Global Variable(HP_LOCATIONS_SMALL, Append To Array(Global Variable(HP_LOCATIONS_SMALL), Vector(29.87, -1.88, -65.23)));
@@ -36,7 +34,6 @@ rule("INIT MAP_HANAMURA") {
     Set Global Variable(HP_LOCATIONS_SMALL, Append To Array(Global Variable(HP_LOCATIONS_SMALL), Vector(40.96, 0.30, 34.56)));
 
     // Assing to container
-    Set Global Variable(HP_LOCATIONS, Empty Array);
     Set Global Variable At Index(HP_LOCATIONS, Global Variable(KEY_HEALTHPACK_TYPE_LARGE), Global Variable(HP_LOCATIONS_LARGE));
     Set Global Variable At Index(HP_LOCATIONS, Global Variable(KEY_HEALTHPACK_TYPE_SMALL), Global Variable(HP_LOCATIONS_SMALL));
   }

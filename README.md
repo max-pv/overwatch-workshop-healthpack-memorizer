@@ -22,7 +22,5 @@ At this moment you can start chaning files in `src` directory and see the result
 
 ## ToDo
 
-- User Spawn location
-- Calculate coords of contrrols and 
 - HUD
 - Add another maps

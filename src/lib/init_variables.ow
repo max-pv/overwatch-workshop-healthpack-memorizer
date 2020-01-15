@@ -20,6 +20,8 @@ variables {
     9: SMALL_HP_INFO
     10: LARGE_HP_INFO
 
+    11: SPAWN_LOCATION
+
   player:
     0: CURRENT_HP_TYPE
     1: CURRENT_HP_IDX
@@ -32,16 +34,8 @@ rule("INIT VARIABLES") {
 
   actions {
     Set Global Variable(KEY_HEALTHPACK_TYPE_LARGE, 0);
-    Set Global Variable(KEY_HEALTHPACK_TYPE_SMALL, 1);
-
-    // Deafult controls location
-    Set Global Variable(SMALL_HP_TOGGLE_LOCATION, Vector(0, 0, 0));
-    Set Global Variable(LARGE_HP_TOGGLE_LOCATION, Vector(0, 0, 0));
-    Set Global Variable(LEGEND_LOCATION, Vector(0, 0, 0));
+    Set Global Variable(KEY_HEALTHPACK_TYPE_SMALL, 1);    
     Set Global Variable(TOGGLE_LOCATION_DISTANCE, 2);
-
-    Set Global Variable(SMALL_HP_INFO, Empty Array);
-    Set Global Variable(LARGE_HP_INFO, Empty Array);
   }
 }
 
@@ -52,13 +46,7 @@ rule("INITIALIZE HP_LOCATIONS") {
   }
 
   actions {
-    // Large healthpacks
-    Set Global Variable(HP_LOCATIONS_LARGE, Null);
-    // Small healthpacks
-    Set Global Variable(HP_LOCATIONS_SMALL, Null);
-
     // Assing to container
-    Set Global Variable(HP_LOCATIONS, Empty Array);
     Set Global Variable At Index(HP_LOCATIONS, Global Variable(KEY_HEALTHPACK_TYPE_LARGE), Global Variable(HP_LOCATIONS_LARGE));
     Set Global Variable At Index(HP_LOCATIONS, Global Variable(KEY_HEALTHPACK_TYPE_SMALL), Global Variable(HP_LOCATIONS_SMALL));
   }
