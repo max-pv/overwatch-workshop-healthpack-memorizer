@@ -151,6 +151,45 @@ rule("INIT MAP_DORADO") {
   }
 }
 
+rule("INIT MAP_HOLLYWOOD") {
+  event {
+    Ongoing - Global;
+  }
+
+  conditions {
+    Current Map == Map(Hollywood);
+  }
+
+  actions {
+    // set objects locations
+    Set Global Variable(SMALL_HP_TOGGLE_LOCATION, Vector(-9.942, 0.5, 55.404));
+    Set Global Variable(LARGE_HP_TOGGLE_LOCATION, Vector(-3.619, 0.5, 55.302));
+
+    // Small healthpacks
+    Set Global Variable(HP_LOCATIONS_SMALL, Append To Array(Global Variable(HP_LOCATIONS_SMALL), Vector(19.401, 0, 43.931)));
+    Set Global Variable(HP_LOCATIONS_SMALL, Append To Array(Global Variable(HP_LOCATIONS_SMALL), Vector(-17.952, 1.751, -8.188)));
+    Set Global Variable(HP_LOCATIONS_SMALL, Append To Array(Global Variable(HP_LOCATIONS_SMALL), Vector(10.047, 1.748, -1.972)));
+    Set Global Variable(HP_LOCATIONS_SMALL, Append To Array(Global Variable(HP_LOCATIONS_SMALL), Vector(31.738, 1.858, -78.778)));
+    Set Global Variable(HP_LOCATIONS_SMALL, Append To Array(Global Variable(HP_LOCATIONS_SMALL), Vector(7.607, 1.998, -64.074)));
+    Set Global Variable(HP_LOCATIONS_SMALL, Append To Array(Global Variable(HP_LOCATIONS_SMALL), Vector(-47.993, 3.748, -114.061)));
+    Set Global Variable(HP_LOCATIONS_SMALL, Append To Array(Global Variable(HP_LOCATIONS_SMALL), Vector(-13.878, 1.750, -134.196)));
+    Set Global Variable(HP_LOCATIONS_SMALL, Append To Array(Global Variable(HP_LOCATIONS_SMALL), Vector(-52.937, 3.748, -145.970)));
+
+    // Large Healhpacks
+    Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(-19.887, 5.106, 35.662)));
+    Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(10.289, 1.843, 10.357)));
+    Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(-35.405, -0.156, 8.366)));
+    Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(14.134, 1.840, -40.062)));
+    Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(-16.910, 1.820, -64.840)));
+    Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(-21.519, 1.843, -110.794)));
+    Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(-36.068, 1.841, -91.438)));
+
+    // Assing to container
+    Set Global Variable At Index(HP_LOCATIONS, Global Variable(KEY_HEALTHPACK_TYPE_LARGE), Global Variable(HP_LOCATIONS_LARGE));
+    Set Global Variable At Index(HP_LOCATIONS, Global Variable(KEY_HEALTHPACK_TYPE_SMALL), Global Variable(HP_LOCATIONS_SMALL));
+  }
+}
+
 
 // Workshop legend and controls
 
@@ -357,6 +396,7 @@ rule("SPAWN_PLAYERS") {
 
   conditions {
     Has Spawned(Event Player) == True;
+    Global Variable(SPAWN_LOCATION) != Null;
   }
 
   actions {
@@ -373,6 +413,7 @@ rule("RESPAWS_PLAYERS") {
 
   conditions {
     Is Dead(Event Player) == True;
+    Global Variable(SPAWN_LOCATION) != Null;
   }
 
   actions {

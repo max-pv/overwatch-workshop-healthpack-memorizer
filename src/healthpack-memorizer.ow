@@ -4,6 +4,7 @@
 // MAPS DATABASE
 {% include 'maps/hanamura.ow' %}
 {% include 'maps/dorado.ow' %}
+{% include 'maps/hollywood.ow' %}
 
 // Workshop legend and controls
 {% include 'lib/create_objects.ow' %}
