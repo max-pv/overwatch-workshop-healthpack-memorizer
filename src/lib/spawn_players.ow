@@ -7,6 +7,7 @@ rule("SPAWN_PLAYERS") {
 
   conditions {
     Has Spawned(Event Player) == True;
+    Global Variable(SPAWN_LOCATION) != Null;
   }
 
   actions {
@@ -23,6 +24,7 @@ rule("RESPAWS_PLAYERS") {
 
   conditions {
     Is Dead(Event Player) == True;
+    Global Variable(SPAWN_LOCATION) != Null;
   }
 
   actions {
