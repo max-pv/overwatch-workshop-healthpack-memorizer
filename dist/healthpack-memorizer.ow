@@ -190,6 +190,107 @@ rule("INIT MAP_HOLLYWOOD") {
   }
 }
 
+rule("INIT MAP_ILIOS_LIGHTHOUSE") {
+  event {
+    Ongoing - Global;
+  }
+
+  conditions {
+    Current Map == Map(Ilios Lighthouse);
+  }
+
+  actions {
+    // set objects locations
+    Set Global Variable(SMALL_HP_TOGGLE_LOCATION, Vector(322.64, -23.00, 37.65));
+    Set Global Variable(LARGE_HP_TOGGLE_LOCATION, Vector(328.80, -23.00, 39.82));
+    
+    // Small healthpacks
+    Set Global Variable(HP_LOCATIONS_SMALL, Append To Array(Global Variable(HP_LOCATIONS_SMALL), Vector(367, -28.641, -55.804)));
+    Set Global Variable(HP_LOCATIONS_SMALL, Append To Array(Global Variable(HP_LOCATIONS_SMALL), Vector(319.097, -23.667, -36.086)));
+   
+    // Large healthpacks
+    Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(328.231, -23.548, -22.458)));
+    Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(346.070, -23.548, -23.548)));
+    Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(354.137, -27.547, -9.192)));
+    Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(316.569, -23.548, -51.275)));
+    Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(329.503, -23.547, -62.240)));
+    Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(325.572, -27.547, -78.305)));
+
+    // Assing to container
+    Set Global Variable At Index(HP_LOCATIONS, Global Variable(KEY_HEALTHPACK_TYPE_LARGE), Global Variable(HP_LOCATIONS_LARGE));
+    Set Global Variable At Index(HP_LOCATIONS, Global Variable(KEY_HEALTHPACK_TYPE_SMALL), Global Variable(HP_LOCATIONS_SMALL));
+  }
+}
+
+rule("INIT MAP_ILIOS_WELL") {
+  event {
+    Ongoing - Global;
+  }
+
+  conditions {
+    Current Map == Map(Ilios Well);
+  }
+
+  actions {
+    // set objects locations
+    Set Global Variable(SMALL_HP_TOGGLE_LOCATION, Vector(-152.48, -2.41, -84.72));
+    Set Global Variable(LARGE_HP_TOGGLE_LOCATION, Vector(-157.69, -2.41, -88.69));
+    
+    // Small healthpacks
+    Set Global Variable(HP_LOCATIONS_SMALL, Append To Array(Global Variable(HP_LOCATIONS_SMALL), Vector(-183.079, 1.001, -21.271)));
+    Set Global Variable(HP_LOCATIONS_SMALL, Append To Array(Global Variable(HP_LOCATIONS_SMALL), Vector(-182.830, 1.001, -20.943)));
+    Set Global Variable(HP_LOCATIONS_SMALL, Append To Array(Global Variable(HP_LOCATIONS_SMALL), Vector(-227.635, -0.998, -35.730)));
+    Set Global Variable(HP_LOCATIONS_SMALL, Append To Array(Global Variable(HP_LOCATIONS_SMALL), Vector(-194.210, 1.014, -1.799)));
+    Set Global Variable(HP_LOCATIONS_SMALL, Append To Array(Global Variable(HP_LOCATIONS_SMALL), Vector(-212.958, 1.013, 9.198)));
+
+    // Large healthpacks
+    Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(-155.233, 0.090, -46.761)));
+    Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(-178.726, -0.895, -39.562)));
+    Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(-231.239, -0.891, 12.877)));
+    Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(-240.052, 0.094, 36.914)));
+
+    // Assing to container
+    Set Global Variable At Index(HP_LOCATIONS, Global Variable(KEY_HEALTHPACK_TYPE_LARGE), Global Variable(HP_LOCATIONS_LARGE));
+    Set Global Variable At Index(HP_LOCATIONS, Global Variable(KEY_HEALTHPACK_TYPE_SMALL), Global Variable(HP_LOCATIONS_SMALL));
+  }
+}
+
+rule("INIT MAP_ILIOS_RUINS") {
+  event {
+    Ongoing - Global;
+  }
+
+  conditions {
+    Current Map == Map(Ilios Ruins);
+  }
+
+  actions {
+    // set objects locations
+    Set Global Variable(SMALL_HP_TOGGLE_LOCATION, Vector(-72.84, 63.73, -164.55));
+    Set Global Variable(LARGE_HP_TOGGLE_LOCATION, Vector(-72.78, 63.73, -159.28));
+    
+    // Small healthpacks (none on this map - point to large control)
+    Set Global Variable(
+      HP_LOCATIONS_SMALL, 
+      Append To Array(Global Variable(HP_LOCATIONS_SMALL), 
+      Global Variable(LARGE_HP_TOGGLE_LOCATION)
+    ));
+
+    // Large healthpacks
+    Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(-4.730, 60.460, -174.628)));
+    Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(-5.672, 60.460, -140.020)));
+    Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(6.401, 60.460, -156.691)));
+    Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(28.590, 60.722, -177.711)));
+    Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(49.873, 60.460, -156.337)));
+    Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(62.265, 60.461, -174.741)));
+    Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(63.090, 60.460, -140.440)));
+
+    // Assing to container
+    Set Global Variable At Index(HP_LOCATIONS, Global Variable(KEY_HEALTHPACK_TYPE_LARGE), Global Variable(HP_LOCATIONS_LARGE));
+    Set Global Variable At Index(HP_LOCATIONS, Global Variable(KEY_HEALTHPACK_TYPE_SMALL), Global Variable(HP_LOCATIONS_SMALL));
+  }
+}
+
 
 // Workshop legend and controls
 
@@ -247,6 +348,16 @@ rule("CREATE CONTROLS") {
     Visible To Position and Radius
   );
 
+    
+  Create Effect(
+    All Players(All Teams), 
+    Good Aura Sound, 
+    White, 
+    Global Variable(LARGE_HP_TOGGLE_LOCATION), 
+    35, 
+    Visible To Position and Radius
+  );
+
 
     
   Create In-World Text(
@@ -267,6 +378,16 @@ rule("CREATE CONTROLS") {
     Aqua, 
     Global Variable(SMALL_HP_TOGGLE_LOCATION), 
     1, 
+    Visible To Position and Radius
+  );
+
+    
+  Create Effect(
+    All Players(All Teams), 
+    Good Aura Sound, 
+    White, 
+    Global Variable(SMALL_HP_TOGGLE_LOCATION), 
+    35, 
     Visible To Position and Radius
   );
 
@@ -475,9 +596,16 @@ rule("UPDATE WAYPOINT BEAM") {
       CURRENT_HP_IDX, 
       Add(Player Variable(Event Player, CURRENT_HP_IDX), 1)
     );
-    Play Effect(All Players(All Teams), Good Explosion, Aqua, Event Player, 1);
+    Play Effect(
+      All Players(All Teams), 
+      Buff Explosion Sound, 
+      White, 
+      Event Player, 
+      50
+    );
   }
 }
+
 
 // Reset player's current hp idx when reached the end of the HP_LOCATIONS array
 rule("RESET CURRENT_HP_IDX") {
@@ -495,9 +623,10 @@ rule("RESET CURRENT_HP_IDX") {
   }
 
   actions {
-    Set Player Variable(Event Player, CURRENT_HP_IDX, 0);
+    Set Player Variable(Event Player, CURRENT_HP_IDX, 1);
   }
 }
+
 
 // Debugging & development tools
 // Debugging information
@@ -522,6 +651,19 @@ rule("SET LOCATION HUD") {
       White, 
       Visible To and String,
       Default Visibility
+    );
+
+    Create HUD Text(
+      Event Player, 
+      Current Map, 
+      Null,
+      Null, 
+      Left, 
+      0, 
+      White, 
+      White, 
+      White, Visible To and String,
+		  Default Visibility
     );
   }
 }
@@ -569,3 +711,4 @@ rule("BUILD LARGE HP INFORMATION ARRAY") {
     );
   }
 }
+

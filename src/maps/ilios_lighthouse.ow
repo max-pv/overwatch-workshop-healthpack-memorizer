@@ -1,0 +1,31 @@
+rule("INIT MAP_ILIOS_LIGHTHOUSE") {
+  event {
+    Ongoing - Global;
+  }
+
+  conditions {
+    Current Map == Map(Ilios Lighthouse);
+  }
+
+  actions {
+    // set objects locations
+    Set Global Variable(SMALL_HP_TOGGLE_LOCATION, Vector(322.64, -23.00, 37.65));
+    Set Global Variable(LARGE_HP_TOGGLE_LOCATION, Vector(328.80, -23.00, 39.82));
+    
+    // Small healthpacks
+    Set Global Variable(HP_LOCATIONS_SMALL, Append To Array(Global Variable(HP_LOCATIONS_SMALL), Vector(367, -28.641, -55.804)));
+    Set Global Variable(HP_LOCATIONS_SMALL, Append To Array(Global Variable(HP_LOCATIONS_SMALL), Vector(319.097, -23.667, -36.086)));
+   
+    // Large healthpacks
+    Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(328.231, -23.548, -22.458)));
+    Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(346.070, -23.548, -23.548)));
+    Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(354.137, -27.547, -9.192)));
+    Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(316.569, -23.548, -51.275)));
+    Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(329.503, -23.547, -62.240)));
+    Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(325.572, -27.547, -78.305)));
+
+    // Assing to container
+    Set Global Variable At Index(HP_LOCATIONS, Global Variable(KEY_HEALTHPACK_TYPE_LARGE), Global Variable(HP_LOCATIONS_LARGE));
+    Set Global Variable At Index(HP_LOCATIONS, Global Variable(KEY_HEALTHPACK_TYPE_SMALL), Global Variable(HP_LOCATIONS_SMALL));
+  }
+}

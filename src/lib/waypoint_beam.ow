@@ -49,6 +49,12 @@ rule("UPDATE WAYPOINT BEAM") {
       CURRENT_HP_IDX, 
       Add(Player Variable(Event Player, CURRENT_HP_IDX), 1)
     );
-    Play Effect(All Players(All Teams), Good Explosion, Aqua, Event Player, 1);
+    Play Effect(
+      All Players(All Teams), 
+      Buff Explosion Sound, 
+      White, 
+      Event Player, 
+      50
+    );
   }
 }

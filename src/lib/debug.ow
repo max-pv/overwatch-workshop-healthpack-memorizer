@@ -21,6 +21,19 @@ rule("SET LOCATION HUD") {
       Visible To and String,
       Default Visibility
     );
+
+    Create HUD Text(
+      Event Player, 
+      Current Map, 
+      Null,
+      Null, 
+      Left, 
+      0, 
+      White, 
+      White, 
+      White, Visible To and String,
+		  Default Visibility
+    );
   }
 }
 

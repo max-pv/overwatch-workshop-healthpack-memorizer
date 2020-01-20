@@ -13,6 +13,6 @@ rule("RESET CURRENT_HP_IDX") {
   }
 
   actions {
-    Set Player Variable(Event Player, CURRENT_HP_IDX, 0);
+    Set Player Variable(Event Player, CURRENT_HP_IDX, 1);
   }
 }
