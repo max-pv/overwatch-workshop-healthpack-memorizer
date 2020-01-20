@@ -5,6 +5,9 @@
 {% include 'maps/hanamura.ow' %}
 {% include 'maps/dorado.ow' %}
 {% include 'maps/hollywood.ow' %}
+{% include 'maps/ilios_lighthouse.ow' %}
+{% include 'maps/ilios_well.ow' %}
+{% include 'maps/ilios_ruins.ow' %}
 
 // Workshop legend and controls
 {% include 'lib/create_objects.ow' %}

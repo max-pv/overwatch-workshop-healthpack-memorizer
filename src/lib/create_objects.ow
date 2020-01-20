@@ -59,6 +59,7 @@ rule("CREATE CONTROLS") {
       ) 
     }}
     {{ create_effect("Orb", "Global Variable(LARGE_HP_TOGGLE_LOCATION)", "Green") }}
+    {{ create_effect("Good Aura Sound", "Global Variable(LARGE_HP_TOGGLE_LOCATION)", "White", scale=35) }}
 
     {{ 
       create_text(
@@ -68,6 +69,7 @@ rule("CREATE CONTROLS") {
       ) 
     }}
     {{ create_effect("Orb", "Global Variable(SMALL_HP_TOGGLE_LOCATION)", "Aqua") }}
+    {{ create_effect("Good Aura Sound", "Global Variable(SMALL_HP_TOGGLE_LOCATION)", "White", scale=35) }}
 
   }
 }

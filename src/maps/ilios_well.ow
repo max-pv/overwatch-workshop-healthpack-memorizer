@@ -1,0 +1,32 @@
+rule("INIT MAP_ILIOS_WELL") {
+  event {
+    Ongoing - Global;
+  }
+
+  conditions {
+    Current Map == Map(Ilios Well);
+  }
+
+  actions {
+    // set objects locations
+    Set Global Variable(SMALL_HP_TOGGLE_LOCATION, Vector(-152.48, -2.41, -84.72));
+    Set Global Variable(LARGE_HP_TOGGLE_LOCATION, Vector(-157.69, -2.41, -88.69));
+    
+    // Small healthpacks
+    Set Global Variable(HP_LOCATIONS_SMALL, Append To Array(Global Variable(HP_LOCATIONS_SMALL), Vector(-183.079, 1.001, -21.271)));
+    Set Global Variable(HP_LOCATIONS_SMALL, Append To Array(Global Variable(HP_LOCATIONS_SMALL), Vector(-182.830, 1.001, -20.943)));
+    Set Global Variable(HP_LOCATIONS_SMALL, Append To Array(Global Variable(HP_LOCATIONS_SMALL), Vector(-227.635, -0.998, -35.730)));
+    Set Global Variable(HP_LOCATIONS_SMALL, Append To Array(Global Variable(HP_LOCATIONS_SMALL), Vector(-194.210, 1.014, -1.799)));
+    Set Global Variable(HP_LOCATIONS_SMALL, Append To Array(Global Variable(HP_LOCATIONS_SMALL), Vector(-212.958, 1.013, 9.198)));
+
+    // Large healthpacks
+    Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(-155.233, 0.090, -46.761)));
+    Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(-178.726, -0.895, -39.562)));
+    Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(-231.239, -0.891, 12.877)));
+    Set Global Variable(HP_LOCATIONS_LARGE, Append To Array(Global Variable(HP_LOCATIONS_LARGE), Vector(-240.052, 0.094, 36.914)));
+
+    // Assing to container
+    Set Global Variable At Index(HP_LOCATIONS, Global Variable(KEY_HEALTHPACK_TYPE_LARGE), Global Variable(HP_LOCATIONS_LARGE));
+    Set Global Variable At Index(HP_LOCATIONS, Global Variable(KEY_HEALTHPACK_TYPE_SMALL), Global Variable(HP_LOCATIONS_SMALL));
+  }
+}
